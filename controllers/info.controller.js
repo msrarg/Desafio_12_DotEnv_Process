@@ -2,8 +2,7 @@ const { request }  = require('express');
 const { response } = require('express');
 const process = require('process');
 
-const info = (req, res) => {
-
+const info = ( req = request, res = response ) => {
     const info = {
         arguments:process.argv.slice(2),
         platform:process.platform,
@@ -12,11 +11,10 @@ const info = (req, res) => {
         execPath:process.execPath,
         pid:process.pid,
         proyectPath:process.cwd()
-    }
-
+    };
     res.render("pages/info",info);
 }
 
 module.exports = {
     info
-}
+};

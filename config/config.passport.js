@@ -1,16 +1,15 @@
-const User     = require("../models/user.js");
 const passport = require("passport");
-const local    = require("passport-local") 
+const LocalStrategy = require("passport-local").Strategy;
+
+const User = require("../models/user.js");
 
 const { 
     createHash, 
     isValidPassword } = require("../utils/password");
 
-const LocalStrategy = local.Strategy
-
 const initializePassport = () => {
-    passport.use(
-        'register',
+
+    passport.use('register',
         new LocalStrategy(
             { 
                 usernameField: 'email',
@@ -20,11 +19,12 @@ const initializePassport = () => {
             async (req, username, password, done) => {
                 try {
                     let user = await User.findOne({ email:username })
-                    if (user) return done(null, false)
+                    if (user) 
+                        return done(null, false);
                     const newUser = {
-                        name: req.body.username,
-                        password : createHash(password),
+                        name: req.body.name,
                         email: username,
+                        password : createHash(password),
                     }
 
                     try {
@@ -40,18 +40,19 @@ const initializePassport = () => {
         )
     )
 
-    passport.use(
-        'login',
-        new LocalStrategy({
-            usernameField: 'email',
-            passwordField: 'passwd',
-        },
-            async (username,password,done) => {
+    passport.use('login',
+        new LocalStrategy(
+            {
+                usernameField: 'email',
+                passwordField: 'passwd',
+            },
+            async ( username, password, done) => {
                  try {
                     let user = await User.findOne({ email:username});
-                    if (!user) return done(null, false,{message:'No existe'})
-                    if (!isValidPassword(user,password)) return done(null, false,{message:'Invalid password'})
-
+                    if (!user) 
+                        return done(null, false, {message:'No existe'});
+                    if (!isValidPassword(user, password)) 
+                        return done(null, false,{message:'Invalid password'});
                     return done(null, user)
                 } catch (error) {
                     done(error);
@@ -59,15 +60,16 @@ const initializePassport = () => {
             }
         )
     )
-    passport.serializeUser((user,done) => {
-        done(null,user._id)
-    })
 
-    passport.deserializeUser((id,done) => {
+    passport.serializeUser((user, done) => {
+        done(null, user._id);
+    });
+
+    passport.deserializeUser((id, done) => {
         User.findById(id, function(err, user) {
             done(err, user);
         });
-    })
+    });
 }
 
 module.exports = {

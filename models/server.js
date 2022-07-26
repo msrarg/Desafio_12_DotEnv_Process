@@ -1,5 +1,6 @@
+require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
+// const cors = require('cors');
 
 // const handlebars = require('express-handlebars')
 const { engine } = require('express-handlebars');
@@ -34,7 +35,6 @@ class Server {
 
     async conectarDB() {
         await dbConnectionMongoAtlas();
-        this.app.use(sessionMongoDB);
     }
 
     middlewares() {
@@ -44,7 +44,7 @@ class Server {
             "hbs",
             engine({
                 layoutsDir: path.join(__dirname, "../views/layouts"), // Ruta de los layouts
-                defaultLayout: "index", // Layout por defecto
+                defaultLayout: "layout.hbs", // Layout por defecto
                 extname: ".hbs", // Extensión de los archivos
             })
         );
@@ -53,7 +53,7 @@ class Server {
         // this.hbs.registerPartials(__dirname + '/views/partials', function(err) {});
 
         // CORS
-        this.app.use( cors() );
+        // this.app.use( cors() );
 
         // Lectura y parseo del body
         this.app.use(express.json());
@@ -69,9 +69,10 @@ class Server {
 
         // Directorio publico
         this.app.use(express.static('public')); // Ruta de la carpeta public
-        this.app.use(express.static(path.join(__dirname, '/views'))); // Ruta de la carpeta public
-        this.app.use(express.static(path.join(__dirname, 'public'))); // Ruta de la carpeta public
+        // this.app.use(express.static(path.join(__dirname, '/views')));
+        // this.app.use(express.static(path.join(__dirname, 'public')));
 
+        this.app.use(sessionMongoDB);
         initializePassport();
         this.app.use(passport.initialize());
         this.app.use(passport.session());

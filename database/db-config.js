@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const dbConnectionMongoAtlas = async () => {
     try {
-        await mongoose.connect( process.env.MONGODB_CNN, {
+        await mongoose.connect( process.env.MONGO_CNN, {
             useNewUrlParser:    true, // <-- no longer necessary.
             useUnifiedTopology: true, // <-- no longer necessary.
             // useCreateIndex:     true,

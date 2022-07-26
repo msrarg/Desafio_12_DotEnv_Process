@@ -1,11 +1,11 @@
-const MongoStore = require('connect-mongo')
-const session    = require('express-session')
+require('dotenv').config();
+const MongoStore = require('connect-mongo');
+const session    = require('express-session');
 
 // Session con Mongo Atlas
 let sessionMongoDB = session({
     store: MongoStore.create({
-        //mongoUrl: process.env.MONGODB_CNN + "/" + process.env.MONGO_DATABASE, 
-        mongoUrl: process.env.MONGODB_CNN, 
+        mongoUrl: process.env.MONGO_CNN + "/" + process.env.MONGO_DATABASE, 
         mongoOptions: {
             useNewUrlParser:    true, // <-- no longer necessary.
             useUnifiedTopology: true, // <-- no longer necessary.
