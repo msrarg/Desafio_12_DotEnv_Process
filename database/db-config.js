@@ -3,15 +3,15 @@ const mongoose = require('mongoose');
 const dbConnectionMongoAtlas = async () => {
     try {
         await mongoose.connect( process.env.MONGODB_CNN, {
-            useNewUrlParser:    true,
-            useUnifiedTopology: true,
-            useCreateIndex:     true,
+            useNewUrlParser:    true, // <-- no longer necessary.
+            useUnifiedTopology: true, // <-- no longer necessary.
+            // useCreateIndex:     true,
             // useFindAndModify:   false
         });
-        console.log('Conexión a Mongo Atlas establecida.');
+        console.log('MongoDB Atlas connection established.');
     } catch (error) {
-        console.log(error);
-        throw new Error('Error al intentar inicializar la conexión a Mongo Atlas.');
+        console.log(`MongoDB connection failed: ${error}.`);
+        throw new Error(`MongoDB connection failed: ${error}.`);
     }
 }
 

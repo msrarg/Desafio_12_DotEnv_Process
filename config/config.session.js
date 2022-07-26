@@ -4,11 +4,12 @@ const session    = require('express-session')
 // Session con Mongo Atlas
 let sessionMongoDB = session({
     store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_CNN + "/" + process.env.MONGO_DATABASE, 
+        //mongoUrl: process.env.MONGODB_CNN + "/" + process.env.MONGO_DATABASE, 
+        mongoUrl: process.env.MONGODB_CNN, 
         mongoOptions: {
-            useNewUrlParser:    true, 
-            useUnifiedTopology: true,
-            useCreateIndex:     true,
+            useNewUrlParser:    true, // <-- no longer necessary.
+            useUnifiedTopology: true, // <-- no longer necessary.
+            // useCreateIndex:     true,
             // useFindAndModify:   false
         }
     }),
